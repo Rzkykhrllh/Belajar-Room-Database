@@ -22,7 +22,8 @@ import androidx.lifecycle.AndroidViewModel
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 
 /**
- * ViewModel for SleepTrackerFragment.
+ * ViewModel for SleepTrackerFragment
+ * parameter ke-2 : aplication supaya kita bisa make value2 di res
  */
 class SleepTrackerViewModel(
         val database: SleepDatabaseDao,
