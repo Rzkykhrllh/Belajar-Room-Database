@@ -21,6 +21,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 //Entitiy makai data class
+// ini buat tabelnya
 @Entity(tableName = "daily_sleep_table") //biar bisa masuk database
 data class SleepNight(
 
