@@ -15,7 +15,7 @@
  */
 
 package com.example.android.trackmysleepquality
-/*
+
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -29,14 +29,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-*//**
+/**
  * This is not meant to be a full set of tests. For simplicity, most of your samples do not
  * include tests. However, when building the Room, it is helpful to make sure it works before
  * adding the UI.
- *//*
+ */
 
 @RunWith(AndroidJUnit4::class)
-class SleepDatabaseTest {
+class SleepDatabaseTest {/*
 
     private lateinit var sleepDao: SleepDatabaseDao
     private lateinit var db: SleepDatabase
@@ -66,7 +66,5 @@ class SleepDatabaseTest {
         sleepDao.insert(night)
         val tonight = sleepDao.getTonight()
         assertEquals(tonight?.sleepQuality, -1)
-    }
-}*/
-//
-//
+    }*/
+}
