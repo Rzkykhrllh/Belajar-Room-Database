@@ -20,10 +20,12 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import kotlinx.coroutines.*
+import kotlin.math.log
 
 /**
  * ViewModel for SleepTrackerFragment
@@ -48,6 +50,14 @@ class SleepTrackerViewModel(
     //database itu DAO, dari parameter
     private val nights = database.getAllNights()
 
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight?>()
+    val navigateToSleepQuality : MutableLiveData<SleepNight?>
+        get() = _navigateToSleepQuality
+
+    fun doneNavigate(){
+        _navigateToSleepQuality.value = null
+    }
+
     init {
         //make uiScope karena hasilnya akan ditampilkan di layar
         //tapi didalamnya, ngambil datanya gak make ui scope
@@ -58,9 +68,7 @@ class SleepTrackerViewModel(
     }
 
     private suspend fun getToninghFromDatabase(): SleepNight? {
-        /**
-        fungsi buat data terakhir
-         */
+        /** fungsi buat data terakhir */
         return withContext(Dispatchers.IO) {
             var night = database.getTonight()
 
@@ -99,15 +107,22 @@ class SleepTrackerViewModel(
             val oldNight = tonight.value ?: return@launch
 
             oldNight.endTimeMilli = System.currentTimeMillis()
+
             Log.i("ViewModel", "onStopPressed $oldNight")
+            Log.i("ViewModel", "onStopPressed ${_navigateToSleepQuality.value}")
             update(oldNight)
+
+            Log.i("ViewModel", "You should to be here first")
+
+            _navigateToSleepQuality.value = oldNight
+            Log.i("ViewModel aftermath", "${_navigateToSleepQuality.value}")
         }
     }
 
     private suspend fun update(night:SleepNight){
         withContext(Dispatchers.IO){
-            Log.i("ViewModel", "Updating")
             database.update(night)
+            Log.i("ViewModel", "Update success")
         }
     }
 
