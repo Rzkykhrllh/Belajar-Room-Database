@@ -71,6 +71,16 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepViewModel = viewModel
         binding.setLifecycleOwner(this)
 
+        /** Init Adapter for recycler view*/
+        val adapter = SleepTrackerAdapter() //init adapter
+        binding.sleepList.adapter = adapter //Assign adapter to view
+        viewModel.nights.observe(viewLifecycleOwner,  //Updating data
+                Observer {
+                    it?.let {
+                        adapter.data = it //Assign data to adapter
+                    }
+        })
+
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner,
                 Observer {
                     Log.i("navigation","$it")
