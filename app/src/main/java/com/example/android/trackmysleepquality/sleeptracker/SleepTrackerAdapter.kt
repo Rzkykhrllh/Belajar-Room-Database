@@ -16,7 +16,7 @@ import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-class SleepTrackerAdapter() : androidx.recyclerview.widget.ListAdapter<SleepNight, SleepTrackerAdapter.ViewHolder>(SleepNightDiffCallback()) , Parcelable {
+class SleepTrackerAdapter() : androidx.recyclerview.widget.ListAdapter<SleepNight, SleepTrackerAdapter.ViewHolder>(SleepNightDiffCallback()) {
 // Adapter lebih bertanggung jawab dengan DATA
 
         /* gak dibutuhin lagi karena kita make ListAdapter
@@ -67,43 +67,14 @@ class SleepTrackerAdapter() : androidx.recyclerview.widget.ListAdapter<SleepNigh
             )
         }
 
-        companion object CREATOR : Parcelable.Creator<SleepTrackerAdapter> {
-            override fun createFromParcel(parcel: Parcel): SleepTrackerAdapter {
-                return SleepTrackerAdapter(parcel)
-            }
-
-            override fun newArray(size: Int): Array<SleepTrackerAdapter?> {
-                return arrayOfNulls(size)
-            }
-
+        companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
+                val view = layoutInflater
+                        .inflate(R.layout.list_item_sleep_night, parent, false)
+
                 return ViewHolder(view)
             }
-        }
-    }
-
-
-    constructor(parcel: Parcel) : this() {
-
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<SleepTrackerAdapter> {
-        override fun createFromParcel(parcel: Parcel): SleepTrackerAdapter {
-            return SleepTrackerAdapter(parcel)
-        }
-
-        override fun newArray(size: Int): Array<SleepTrackerAdapter?> {
-            return arrayOfNulls(size)
         }
     }
 
