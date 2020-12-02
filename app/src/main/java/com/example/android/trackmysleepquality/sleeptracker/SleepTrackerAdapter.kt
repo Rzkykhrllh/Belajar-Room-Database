@@ -20,6 +20,7 @@ class SleepTrackerAdapter() : androidx.recyclerview.widget.ListAdapter<SleepNigh
             notifyDataSetChanged()
         }*/
 
+    // when viewHolder Created
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
