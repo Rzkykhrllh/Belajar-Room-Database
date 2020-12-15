@@ -68,6 +68,11 @@ class SleepTrackerViewModel(
         _navigateToSleepQuality.value = null
     }
 
+    /** Live data untuk pindah ke detail fragment*/
+    private val _navigateToDetailQuality = MutableLiveData<Long>()
+    val navigateToSleepDataQuality
+        get() = _navigateToDetailQuality
+
     init {
         //make uiScope karena hasilnya akan ditampilkan di layar
         //tapi didalamnya, ngambil datanya gak make ui scope
@@ -75,6 +80,14 @@ class SleepTrackerViewModel(
             Log.i("ViewModel", "init")
             tonight.value = getToninghFromDatabase()
         }
+    }
+
+    fun onSleepNightClicked(id: Long){
+        _navigateToDetailQuality.value = id
+    }
+
+    fun onSleepDataQualityNavigated(){
+        _navigateToDetailQuality.value = null
     }
 
     private suspend fun getToninghFromDatabase(): SleepNight? {

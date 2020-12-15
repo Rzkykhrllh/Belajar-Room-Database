@@ -21,30 +21,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
+import com.example.android.trackmysleepquality.sleeptracker.SleepTrackerViewModel
 
-/**
- * A fragment with buttons to record start and end times for sleep, which are saved in
- * a database. Cumulative data is displayed in a simple scrollable TextView.
- * (Because we have not learned about RecyclerView yet.)
- */
 class SleepTrackerFragment : Fragment() {
 
-    /**
-     * Called when the Fragment is ready to display content to the screen.
-     *
-     * This function uses DataBindingUtil to inflate R.layout.fragment_sleep_quality.
-     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -52,8 +42,8 @@ class SleepTrackerFragment : Fragment() {
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_sleep_tracker, container, false)
 
-        /** masih bingung ini apaan*/
-        // applcation as context, buat di lempat ke viewmodel
+        /** masih bingung ini apaan
+         * applcation as context, buat di lempar ke viewmodel*/
         val application = requireNotNull(this.activity).application
 
         /**database init */
@@ -71,8 +61,17 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepViewModel = viewModel
         binding.setLifecycleOwner(this)
 
+        /** mengubah layoutmanager menjadi gridlayout*/
+        val manager = GridLayoutManager(activity, 3)
+        binding.sleepList.layoutManager = manager
+
         /** Init Adapter for recycler view*/
-        val adapter = SleepTrackerAdapter() //init adapter
+        val adapter = SleepTrackerAdapter(SleepNightListener { nightId ->
+            Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
+            viewModel.onSleepNightClicked(nightId)
+
+        }) //init adapter
+
         binding.sleepList.adapter = adapter //Assign adapter to view
         viewModel.nights.observe(viewLifecycleOwner,  //Updating data
                 Observer {
@@ -84,6 +83,8 @@ class SleepTrackerFragment : Fragment() {
                     }
         })
 
+
+        /** Observer buat pindah ke quality fragment*/
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner,
                 Observer {
                     Log.i("navigation","$it")
@@ -99,6 +100,25 @@ class SleepTrackerFragment : Fragment() {
                 }
         )
 
+        /** Observer buat pindah ke detail fragment*/
+        viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner,
+                Observer { night->
+
+                Toast.makeText(context, "$night", Toast.LENGTH_LONG).show()
+
+                //apabila sleepNight gak kosong
+                    night?.let {
+
+                        Log.i("Navigation", "$night clicked")
+
+                        this.findNavController().navigate(SleepTrackerFragmentDirections
+                                .actionSleepTrackerFragmentToSleepDetailFragment(night)
+                        )
+
+                        viewModel.onSleepDataQualityNavigated()
+                    }
+                }
+        )
         return binding.root
     }
 }

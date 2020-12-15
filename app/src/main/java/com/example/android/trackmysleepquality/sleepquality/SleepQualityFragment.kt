@@ -54,7 +54,7 @@ class SleepQualityFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        /** get argument from previous fragment*/
+        /** get argument/Data from previous fragment*/
         val arguments = SleepQualityFragmentArgs.fromBundle(arguments!!)
 
         /** DAO Init*/

@@ -44,4 +44,7 @@ interface SleepDatabaseDao{
 
     @Query("select * from daily_sleep_table order by nightID desc limit 1")
     fun getTonight() : SleepNight?
+
+    @Query("select * from daily_sleep_table where nightID= :key")
+    fun getNightWithId(key: Long) : LiveData<SleepNight>
 }
